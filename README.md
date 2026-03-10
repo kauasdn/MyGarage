@@ -3,6 +3,7 @@
 ## Sobre o Projeto
 
 O **MyGarage** é uma aplicação web que permite aos usuários registrar e acompanhar informações sobre seus veículos, incluindo histórico de abastecimentos e manutenções.
+
 O sistema tem como objetivo ajudar motoristas a controlar custos, acompanhar consumo de combustível e manter o histórico de manutenção do veículo organizado.
 
 ---
@@ -10,7 +11,9 @@ O sistema tem como objetivo ajudar motoristas a controlar custos, acompanhar con
 # Domínio do Problema
 
 Muitos proprietários de veículos não possuem uma forma eficiente de registrar informações importantes sobre seus carros, como trocas de óleo, revisões ou consumo de combustível.
+
 Essas informações geralmente ficam espalhadas em anotações ou são esquecidas ao longo do tempo.
+
 O sistema MyGarage propõe uma solução web para centralizar essas informações, permitindo que o usuário registre e consulte facilmente o histórico do veículo.
 
 ---
