@@ -1,11 +1,15 @@
-<p>
-  <img src="https://github.com/user-attachments/assets/cd1ba671-aa08-40d5-ba62-da3442089e40" 
-       width="64" 
-       align="left">
-  <b style="font-size:48px;">MyGarage – Sistema de Gestão de Veículos</b>
-</p>
+<table>
+<tr>
+<td width="90">
+<img src="https://github.com/user-attachments/assets/cd1ba671-aa08-40d5-ba62-da3442089e40" width="72">
+</td>
+<td>
 
-<br>
+<h1>MyGarage – Sistema de Gestão de Veículos</h1>
+
+</td>
+</tr>
+</table>
 
 ## Sobre o Projeto
 
