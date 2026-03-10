@@ -2,7 +2,7 @@
   <img src="https://github.com/user-attachments/assets/cd1ba671-aa08-40d5-ba62-da3442089e40" 
        width="64" 
        align="left">
-  <b style="font-size:28px;">MyGarage – Sistema de Gestão de Veículos</b>
+  <b style="font-size:48px;">MyGarage – Sistema de Gestão de Veículos</b>
 </p>
 
 <br>
