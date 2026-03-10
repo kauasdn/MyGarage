@@ -1,6 +1,6 @@
-# MyGarage – Sistema de Gestão de Veículos
+<img align="left" width="128" height="128" src="https://github.com/user-attachments/assets/cd1ba671-aa08-40d5-ba62-da3442089e40">
 
-<img width="128" height="128" alt="Logo MyGarage" src="https://github.com/user-attachments/assets/cd1ba671-aa08-40d5-ba62-da3442089e40" />
+# MyGarage – Sistema de Gestão de Veículos
 
 ## Sobre o Projeto
 
