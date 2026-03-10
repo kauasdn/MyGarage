@@ -1,5 +1,7 @@
 # MyGarage – Sistema de Gestão de Veículos
 
+<img width="1024" height="1024" alt="Logo MyGarage (1)" src="https://github.com/user-attachments/assets/cd1ba671-aa08-40d5-ba62-da3442089e40" />
+
 ## Sobre o Projeto
 
 O **MyGarage** é uma aplicação web que permite aos usuários registrar e acompanhar informações sobre seus veículos, incluindo histórico de abastecimentos e manutenções.
