@@ -109,20 +109,16 @@ O sistema MyGarage propõe uma solução web para centralizar essas informaçõe
 
 O sistema MyGarage permite que usuários registrem e acompanhem informações de seus veículos, incluindo abastecimentos e manutenções.
 
-Ator principal:
-
-Usuário
+**Ator principal:**
+- Usuário
 
 ## C2 — Containers
 
-- Frontend (React)
-Responsável pela interface do usuário
+- Frontend (React) → Responsável pela interface do usuário
 
-- Backend (Node.js + Express)
-Responsável pela API e regras de negócio
+- Backend (Node.js + Express) → Responsável pela API e regras de negócio
 
-- Banco de Dados (PostgreSQL)
-Armazena os dados do sistema
+- Banco de Dados (PostgreSQL) → Armazena os dados do sistema
 
 ## C3 — Componentes
 
