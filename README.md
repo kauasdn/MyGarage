@@ -104,6 +104,44 @@ O sistema MyGarage propõe uma solução web para centralizar essas informaçõe
 
 ---
 
+# Arquitetura — Modelo C4
+## C1 — Contexto
+
+O sistema MyGarage permite que usuários registrem e acompanhem informações de seus veículos, incluindo abastecimentos e manutenções.
+
+Ator principal:
+
+Usuário
+
+## C2 — Containers
+
+- Frontend (React)
+Responsável pela interface do usuário
+
+- Backend (Node.js + Express)
+Responsável pela API e regras de negócio
+
+- Banco de Dados (PostgreSQL)
+Armazena os dados do sistema
+
+## C3 — Componentes
+
+### Backend
+
+- Controllers → recebem requisições
+
+- Services → regras de negócio
+
+- Models → estrutura dos dados
+
+### Frontend
+
+- Pages → telas do sistema
+
+- Components → elementos reutilizáveis
+
+- Services → comunicação com API
+
 # Autor
 
 - Kauã M. Bassan
