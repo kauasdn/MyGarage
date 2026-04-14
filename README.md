@@ -138,6 +138,10 @@ O sistema MyGarage permite que usuários registrem e acompanhem informações de
 
 - Services → comunicação com API
 
+# Projeto no Figma
+
+https://www.figma.com/design/KctESLfa88grMvg1dCNwTy/MyGarage?node-id=0-1&t=gxWx4pI4D6iaI64J-1
+
 # Autor
 
 - Kauã M. Bassan
