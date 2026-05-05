@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 export default function ThemeToggle() {
-  // Busca a preferência salva ou usa a do sistema
   const [isDark, setIsDark] = useState(
     localStorage.getItem("theme") === "dark" || 
     (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)

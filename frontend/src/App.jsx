@@ -13,7 +13,6 @@ import MinhaConta from "./pages/MinhaConta";
 function AppContent() {
   const { user } = useContext(AuthContext);
   
-  // 1. Alterado o estado inicial de "login" para "comparativos"
   const [page, setPage] = useState("comparativos");
 
   // Estado global de veículos
@@ -23,18 +22,15 @@ function AppContent() {
   const [veiculoAtivoId, setVeiculoAtivoId] = useState(veiculos[0]?.id);
   const veiculoAtivo = veiculos.find(v => v.id === veiculoAtivoId);
 
-  // 2. Nova lógica de proteção de rotas e áreas públicas
   if (!user) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
         
-        {/* Se a página for 'comparativos', renderiza de forma ampla e limpa */}
         {page === "comparativos" ? (
           <main className="w-full max-w-6xl mx-auto p-6">
             <Comparativos setPage={setPage} />
           </main>
         ) : (
-          /* Caso contrário, centraliza as caixas de Login e Cadastro no meio do ecrã */
           <div className="flex items-center justify-center min-h-[80vh]">
             <main className="w-full max-w-6xl p-6 flex justify-center">
               {page === "cadastro" ? <Cadastro setPage={setPage} /> : <Login setPage={setPage} />}

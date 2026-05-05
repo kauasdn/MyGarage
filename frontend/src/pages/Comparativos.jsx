@@ -50,7 +50,6 @@ export default function Comparativos({ setPage }) {
           <p className="text-gray-500 dark:text-gray-400">Os veículos mais bem avaliados pela nossa comunidade em cada categoria.</p>
         </div>
         
-        {/* Renderiza o botão de Login APENAS se o usuário não estiver logado */}
         {!user && (
           <Button onClick={() => setPage("login")} className="px-6 py-2">
             Fazer Login

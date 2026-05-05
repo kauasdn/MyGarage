@@ -17,10 +17,8 @@ export default function Cadastro({ setPage }) {
 
   return (
     <div className="flex items-center justify-center min-h-[80vh] w-full">
-      {/* 🚀 Alterado: max-w-xl (ainda maior para acomodar a grade de senhas) e md:p-12 */}
       <div className="bg-white dark:bg-gray-800 p-8 md:p-12 rounded-3xl shadow-lg w-full max-w-xl border border-gray-100 dark:border-gray-700">
         <div className="text-center mb-10">
-          {/* 🚀 Alterado: Fontes maiores */}
           <h1 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-gray-100 mb-3">Criar Conta</h1>
           <p className="text-gray-500 dark:text-gray-400 md:text-lg">Junte-se ao MyGarage hoje mesmo</p>
         </div>
@@ -44,7 +42,6 @@ export default function Cadastro({ setPage }) {
             required
           />
           
-          {/* A grade para senhas vai respirar muito melhor agora */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <Input 
               type="password" 
@@ -65,7 +62,6 @@ export default function Cadastro({ setPage }) {
           </div>
 
           <div className="pt-6 flex justify-center">
-            {/* 🚀 Alterado: Botão largo e robusto */}
             <Button type="submit" className="w-full py-3.5 text-lg">Cadastrar</Button>
           </div>
         </form>

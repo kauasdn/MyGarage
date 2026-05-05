@@ -25,7 +25,7 @@ export default function MinhaConta() {
     alert("Dados da conta atualizados com sucesso!");
   };
 
-  // Função para lidar com a exclusão da conta
+  // Função para exclusão da conta
   const handleDeleteAccount = () => {
     const confirmacao = window.confirm(
       "Tem a certeza absoluta de que deseja excluir a sua conta? Esta ação é irreversível e todos os seus veículos e registros serão perdidos."
