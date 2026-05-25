@@ -2,9 +2,9 @@ name: CD — Deploy MyGarage
 
 on:
   push:
-    branches: [main]   # dispara apenas quando CI passa no main
+    branches: [main]
 
-# Garante que o CI (ci.yml) passe antes de fazer o deploy
+# Garante que o CI passe antes de fazer o deploy
 concurrency:
   group: deploy-production
   cancel-in-progress: false
