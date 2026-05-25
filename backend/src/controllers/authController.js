@@ -15,7 +15,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "super_segredo_mygarage_123";
 const registrar = async (req, res) => {
   try {
     const { nome, email, senha } = req.body;
-    console.log("👉 Recebido pedido de registo para:", email);
+    console.log("Recebido pedido de registo para:", email);
 
     const utilizadorExistente = await prisma.usuario.findUnique({ where: { email } });
     if (utilizadorExistente) {

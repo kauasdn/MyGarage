@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import TopNav from "./components/TopNav";
 import Dashboard from "./pages/Dashboard";
 import Veiculos from "./pages/Veiculos";
@@ -9,23 +9,42 @@ import Cadastro from "./pages/Cadastro";
 import { AuthProvider, AuthContext } from "./contexts/AuthContext";
 import Comparativos from "./pages/Comparativos";
 import MinhaConta from "./pages/MinhaConta";
+import api from "./services/api";
 
 function AppContent() {
   const { user } = useContext(AuthContext);
-  
+
   const [page, setPage] = useState("comparativos");
 
-  // Estado global de veículos
-  const [veiculos, setVeiculos] = useState([
-    { id: 1, marca: "Toyota", modelo: "Corolla", ano: "2020", placa: "ABC-1234" }
-  ]);
-  const [veiculoAtivoId, setVeiculoAtivoId] = useState(veiculos[0]?.id);
-  const veiculoAtivo = veiculos.find(v => v.id === veiculoAtivoId);
+  // Estado global
+  const [veiculos, setVeiculos] = useState([]);
+  const [veiculoAtivoId, setVeiculoAtivoId] = useState(null);
+  const veiculoAtivo = veiculos.find(v => v.id === veiculoAtivoId) || null;
+
+  // Carrega veículos
+  useEffect(() => {
+    if (!user) {
+      setVeiculos([]);
+      setVeiculoAtivoId(null);
+      return;
+    }
+    async function carregarVeiculos() {
+      try {
+        const response = await api.get('/vehicles');
+        setVeiculos(response.data);
+        if (response.data.length > 0) {
+          setVeiculoAtivoId(response.data[0].id);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar veículos", error);
+      }
+    }
+    carregarVeiculos();
+  }, [user]);
 
   if (!user) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
-        
         {page === "comparativos" ? (
           <main className="w-full max-w-6xl mx-auto p-6">
             <Comparativos setPage={setPage} />
@@ -37,7 +56,6 @@ function AppContent() {
             </main>
           </div>
         )}
-        
       </div>
     );
   }
@@ -45,7 +63,7 @@ function AppContent() {
   const renderPage = () => {
     switch (page) {
       case "dashboard": return <Dashboard veiculo={veiculoAtivo} />;
-      case "veiculos": return <Veiculos veiculos={veiculos} setVeiculos={setVeiculos} />;
+      case "veiculos": return <Veiculos veiculos={veiculos} setVeiculos={setVeiculos} setVeiculoAtivoId={setVeiculoAtivoId} />;
       case "abastecimentos": return <Abastecimentos veiculo={veiculoAtivo} />;
       case "manutencoes": return <Manutencoes veiculo={veiculoAtivo} />;
       case "minha-conta": return <MinhaConta />;
@@ -56,12 +74,12 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
-      <TopNav 
-        page={page} 
-        setPage={setPage} 
-        veiculos={veiculos} 
-        veiculoAtivoId={veiculoAtivoId} 
-        setVeiculoAtivoId={setVeiculoAtivoId} 
+      <TopNav
+        page={page}
+        setPage={setPage}
+        veiculos={veiculos}
+        veiculoAtivoId={veiculoAtivoId}
+        setVeiculoAtivoId={setVeiculoAtivoId}
       />
       <main className="max-w-6xl mx-auto p-6">
         {renderPage()}

@@ -1,16 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Input from "../components/UI/Input";
 import Button from "../components/UI/Button";
 import Table from "../components/Table";
+import api from "../services/api";
 
 export default function Manutencoes({ veiculo }) {
   const [lista, setLista] = useState([]);
   const [form, setForm] = useState({ tipo: "", km: "", valor: "" });
 
-  const add = () => {
+  useEffect(() => {
+    if (!veiculo?.id) return;
+    async function carregar() {
+      try {
+        const response = await api.get(`/manutencoes/veiculo/${veiculo.id}`);
+        setLista(response.data);
+      } catch (error) {
+        console.error("Erro ao carregar manutenções", error);
+      }
+    }
+    carregar();
+  }, [veiculo?.id]);
+
+  const add = async () => {
     if (!form.tipo || !form.valor) return alert("Dados incompletos!");
-    setLista([...lista, { ...form, id: Date.now() }]);
-    setForm({ tipo: "", km: "", valor: "" });
+    if (!veiculo?.id) return alert("Selecione um veículo antes de registar.");
+    try {
+      const response = await api.post('/manutencoes', {
+        descricao: form.tipo,
+        kmAtual: form.km,
+        custo: form.valor,
+        veiculoId: veiculo.id
+      });
+      setLista([response.data, ...lista]);
+      setForm({ tipo: "", km: "", valor: "" });
+    } catch (error) {
+      alert("Erro ao registar manutenção.");
+    }
   };
 
   return (
@@ -31,13 +56,14 @@ export default function Manutencoes({ veiculo }) {
       </div>
 
       <Table
-        headers={["Serviço", "Quilometragem", "Valor"]}
+        headers={["Data", "Serviço", "Quilometragem", "Valor"]}
         data={lista}
         renderRow={(m) => (
           <>
-            <td className="p-4 font-medium">{m.tipo}</td>
-            <td className="p-4">{m.km} km</td>
-            <td className="p-4 font-bold text-red-600 dark:text-red-400 font-mono italic">R$ {m.valor}</td>
+            <td className="p-4 text-gray-600 dark:text-gray-400">{new Date(m.data).toLocaleDateString('pt-BR')}</td>
+            <td className="p-4 font-medium">{m.descricao}</td>
+            <td className="p-4">{m.kmAtual} km</td>
+            <td className="p-4 font-bold text-red-600 dark:text-red-400 font-mono italic">R$ {Number(m.custo).toFixed(2)}</td>
           </>
         )}
       />

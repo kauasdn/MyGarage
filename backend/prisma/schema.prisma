@@ -7,7 +7,7 @@ datasource db {
   provider = "postgresql"
 }
 
-// 👤 TABELA DE UTILIZADORES
+// TABELA DE UTILIZADORES
 model Usuario {
   id        Int       @id @default(autoincrement())
   nome      String
@@ -20,7 +20,7 @@ model Usuario {
   veiculos  Veiculo[] 
 }
 
-// 🚗 TABELA DE VEÍCULOS
+// TABELA DE VEÍCULOS
 model Veiculo {
   id            Int             @id @default(autoincrement())
   marca         String
@@ -36,7 +36,7 @@ model Veiculo {
   manutencoes   Manutencao[]
 }
 
-// ⛽ TABELA DE ABASTECIMENTOS
+// TABELA DE ABASTECIMENTOS
 model Abastecimento {
   id          Int      @id @default(autoincrement())
   data        DateTime @default(now())
@@ -49,7 +49,7 @@ model Abastecimento {
   veiculo     Veiculo  @relation(fields: [veiculoId], references: [id], onDelete: Cascade)
 }
 
-// 🔧 TABELA DE MANUTENÇÕES
+// TABELA DE MANUTENÇÕES
 model Manutencao {
   id          Int      @id @default(autoincrement())
   data        DateTime @default(now())
