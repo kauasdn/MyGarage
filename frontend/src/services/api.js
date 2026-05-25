@@ -1,7 +1,14 @@
 import axios from 'axios';
 
+const apiUrl = import.meta.env.VITE_API_URL;
+const baseURL = apiUrl
+  ? apiUrl.replace(/\/+$/, '')
+  : import.meta.env.DEV
+    ? 'http://localhost:3000'
+    : '';
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000'
+  baseURL
 });
 
 api.interceptors.request.use((config) => {
