@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// 👤 TABELA DE UTILIZADORES
+model Usuario {
+  id        Int       @id @default(autoincrement())
+  nome      String
+  email     String    @unique
+  senha     String    // Guardaremos a senha encriptada (hash)
+  role      String    @default("user") // "user" ou "admin"
+  criadoEm  DateTime  @default(now())
+  
+  // Relacionamento: Um utilizador pode ter vários veículos
+  veiculos  Veiculo[] 
+}
+
+// 🚗 TABELA DE VEÍCULOS
+model Veiculo {
+  id            Int             @id @default(autoincrement())
+  marca         String
+  modelo        String
+  ano           String
+  placa         String          @unique
+  usuarioId     Int
+  criadoEm      DateTime        @default(now())
+
+  // Relacionamentos
+  dono          Usuario         @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  abastecimentos Abastecimento[]
+  manutencoes   Manutencao[]
+}
+
+// ⛽ TABELA DE ABASTECIMENTOS
+model Abastecimento {
+  id          Int      @id @default(autoincrement())
+  data        DateTime @default(now())
+  litros      Float
+  valorTotal  Float
+  kmAtual     Int
+  veiculoId   Int
+
+  // Relacionamento: Pertence a um veículo
+  veiculo     Veiculo  @relation(fields: [veiculoId], references: [id], onDelete: Cascade)
+}
+
+// 🔧 TABELA DE MANUTENÇÕES
+model Manutencao {
+  id          Int      @id @default(autoincrement())
+  data        DateTime @default(now())
+  descricao   String
+  custo       Float
+  kmAtual     Int
+  veiculoId   Int
+
+  // Relacionamento: Pertence a um veículo
+  veiculo     Veiculo  @relation(fields: [veiculoId], references: [id], onDelete: Cascade)
+}

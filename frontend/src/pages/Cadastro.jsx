@@ -1,18 +1,28 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 import Input from "../components/UI/Input";
 import Button from "../components/UI/Button";
 
 export default function Cadastro({ setPage }) {
+  const { handleRegister } = useContext(AuthContext);
   const [form, setForm] = useState({ nome: "", email: "", senha: "", confirmaSenha: "" });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (form.senha !== form.confirmaSenha) {
-      return alert("As senhas não coincidem!");
+      return alert("As palavras-passe não coincidem!");
     }
-    console.log("Dados para Cadastro:", form);
-    alert("Simulação: Cadastro realizado!");
-    setPage("login");
+
+    console.log("A enviar para o Back-end...");
+    
+    const sucesso = await handleRegister(form.nome, form.email, form.senha);
+    
+    if (sucesso) {
+      alert("Conta criada com sucesso! Faça o login para continuar.");
+      setPage("login");
+    } else {
+      alert("Erro ao criar a conta. Verifique o terminal.");
+    }
   };
 
   return (
@@ -45,7 +55,7 @@ export default function Cadastro({ setPage }) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <Input 
               type="password" 
-              label="Senha" 
+              label="Palavra-passe" 
               placeholder="••••••••"
               value={form.senha} 
               onChange={e => setForm({ ...form, senha: e.target.value })} 
@@ -53,7 +63,7 @@ export default function Cadastro({ setPage }) {
             />
             <Input 
               type="password" 
-              label="Confirmar Senha" 
+              label="Confirmar Palavra-passe" 
               placeholder="••••••••"
               value={form.confirmaSenha} 
               onChange={e => setForm({ ...form, confirmaSenha: e.target.value })} 
@@ -62,7 +72,7 @@ export default function Cadastro({ setPage }) {
           </div>
 
           <div className="pt-6 flex justify-center">
-            <Button type="submit" className="w-full py-3.5 text-lg">Cadastrar</Button>
+            <Button type="submit" className="w-full py-3.5 text-lg">Registar</Button>
           </div>
         </form>
 

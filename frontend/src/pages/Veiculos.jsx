@@ -1,16 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Input from "../components/UI/Input";
 import Button from "../components/UI/Button";
 import Table from "../components/Table";
+import api from "../services/api";
 
-export default function Veiculos({ veiculos, setVeiculos }) {
+export default function Veiculos() {
+  const [veiculos, setVeiculos] = useState([]);
   const [form, setForm] = useState({ marca: "", modelo: "", ano: "", placa: "" });
 
-  const addVeiculo = () => {
-    if (!form.modelo || !form.placa) return alert("Modelo e Placa são obrigatórios!");
-    setVeiculos([...veiculos, { ...form, id: Date.now() }]);
-    setForm({ marca: "", modelo: "", ano: "", placa: "" });
-  };
+  useEffect(() => {
+    async function carregarVeiculos() {
+      try {
+        const response = await api.get('/vehicles');
+        setVeiculos(response.data);
+      } catch (error) {
+        console.error("Erro ao carregar veículos", error);
+      }
+    }
+    carregarVeiculos();
+  }, []);
+
+  async function addVeiculo() {
+    try {
+      const response = await api.post('/vehicles', form);
+      setVeiculos([...veiculos, response.data]);
+      setForm({ marca: "", modelo: "", ano: "", placa: "" });
+    } catch (error) {
+      alert("Erro ao adicionar veículo.");
+    }
+  }
 
   return (
     <div className="space-y-6">
