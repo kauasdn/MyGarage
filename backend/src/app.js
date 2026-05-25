@@ -16,6 +16,10 @@ app.use(cors());
 app.use(express.json());
 app.use(requestLogger);
 
+app.get('/', (req, res) => {
+  res.json({ name: 'MyGarage API', status: 'online' });
+});
+
 // Health check (observabilidade)
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', uptime: process.uptime(), timestamp: new Date().toISOString() });
