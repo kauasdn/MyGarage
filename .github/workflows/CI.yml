@@ -7,17 +7,13 @@ on:
     branches: [main]
 
 jobs:
-  # Backend: lint + testes 
   backend-test:
     name: Backend Tests
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
@@ -40,17 +36,13 @@ jobs:
           name: backend-coverage
           path: backend/coverage/
 
-  # Frontend: build
   frontend-build:
     name: Frontend Build
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
@@ -64,7 +56,9 @@ jobs:
         working-directory: frontend
         run: npm run build
         env:
-          VITE_API_URL: ${{ secrets.VITE_API_URL || 'http://localhost:3000' }}
+          # VITE_API_URL deve estar definida como secret no GitHub
+          # Se não estiver, o build usa string vazia e falha — proposital
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4

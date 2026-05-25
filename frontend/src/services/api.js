@@ -1,21 +1,21 @@
 import axios from 'axios';
 
-const apiUrl = import.meta.env.VITE_API_URL;
-const baseURL = apiUrl
-  ? apiUrl.replace(/\/+$/, '')
-  : import.meta.env.DEV
-    ? 'http://localhost:3000'
-    : '';
+// Em produção: VITE_API_URL deve ser a URL do Railway
+// Em dev local: cai para localhost:3000
+const baseURL = import.meta.env.VITE_API_URL?.replace(/\/+$/, '') || 'http://localhost:3000';
 
-const api = axios.create({
-  baseURL
-});
+if (import.meta.env.PROD && !import.meta.env.VITE_API_URL) {
+  console.error(
+    '[api.js] VITE_API_URL não definida em produção! ' +
+    'Defina o secret VITE_API_URL no GitHub e FRONTEND_URL no Railway.'
+  );
+}
+
+const api = axios.create({ baseURL });
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('mygarage_token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
+  if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 

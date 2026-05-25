@@ -1,25 +1,42 @@
-name: CD - Deploy MyGarage
+name: CD — Deploy MyGarage
 
 on:
-  push:
+  workflow_run:
+    workflows: ["CI — MyGarage"]
+    types: [completed]
     branches: [main]
 
-concurrency:
-  group: deploy-production
-  cancel-in-progress: false
-
 jobs:
-  deploy-frontend:
-    name: Deploy Frontend (Vercel)
+  deploy-backend:
+    name: Deploy Backend (Railway)
     runs-on: ubuntu-latest
+    # Só executa se o CI passou
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     environment: production
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+
+      - name: Deploy to Railway
+        working-directory: backend
+        run: railway up --service mygarage-backend --detach
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+  deploy-frontend:
+    name: Deploy Frontend (Vercel)
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    environment: production
+    needs: deploy-backend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
@@ -33,17 +50,12 @@ jobs:
         working-directory: frontend
         run: npm run build
         env:
+          # URL pública do Railway — ex: https://mygarage-backend.up.railway.app
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
-
-      - name: Install Vercel CLI
-        run: npm install -g vercel
 
       - name: Deploy to Vercel
         working-directory: frontend
-        run: |
-          vercel deploy --prod \
-            --token=${{ secrets.VERCEL_TOKEN }} \
-            --yes
+        run: npx vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
         env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_ORG_ID:     ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
