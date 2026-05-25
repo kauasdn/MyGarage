@@ -1,40 +1,18 @@
-name: CD — Deploy MyGarage
+name: CD - Deploy MyGarage
 
 on:
   push:
     branches: [main]
 
-# Garante que o CI passe antes de fazer o deploy
 concurrency:
   group: deploy-production
   cancel-in-progress: false
 
 jobs:
-  # Deploy Backend → Railway 
-  deploy-backend:
-    name: Deploy Backend (Railway)
-    runs-on: ubuntu-latest
-    environment: production
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install Railway CLI
-        run: npm install -g @railway/cli
-
-      - name: Deploy to Railway
-        working-directory: backend
-        run: railway up --service mygarage-backend
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-
-  # Deploy Frontend → Vercel
   deploy-frontend:
     name: Deploy Frontend (Vercel)
     runs-on: ubuntu-latest
     environment: production
-    needs: deploy-backend   # espera o backend estar no ar
 
     steps:
       - name: Checkout
@@ -67,5 +45,5 @@ jobs:
             --token=${{ secrets.VERCEL_TOKEN }} \
             --yes
         env:
-          VERCEL_ORG_ID:     ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
