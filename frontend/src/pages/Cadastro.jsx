@@ -72,7 +72,7 @@ export default function Cadastro({ setPage }) {
           </div>
 
           <div className="pt-6 flex justify-center">
-            <Button type="submit" className="w-full py-3.5 text-lg">Registar</Button>
+            <Button type="submit" className="w-full py-3.5 text-lg">Registrar</Button>
           </div>
         </form>
 
