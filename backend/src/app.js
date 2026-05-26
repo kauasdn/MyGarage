@@ -12,28 +12,32 @@ const { requestLogger, errorHandler } = require('./middlewares/observability');
 
 const app = express();
 
-// ── CORS ────────────────────────────────────────────────────────────────────
-// Em produção lê FRONTEND_URL; em dev aceita localhost:5173
+// ── CORS ─────────────────────────────────────────────────────────────────────
 const allowedOrigins = [
   process.env.FRONTEND_URL,
   'http://localhost:5173',
   'http://localhost:3000',
-].filter(Boolean); // remove undefined se FRONTEND_URL não estiver definida
+].filter(Boolean);
 
-app.use(cors({
+const corsOptions = {
   origin: (origin, callback) => {
-    // Permite chamadas sem origin (Postman, curl, health checks)
     if (!origin) return callback(null, true);
     if (allowedOrigins.includes(origin)) return callback(null, true);
     callback(new Error(`CORS: origem não permitida — ${origin}`));
   },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
-}));
+};
+
+// Responde ao preflight OPTIONS em todas as rotas
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 app.use(express.json());
 app.use(requestLogger);
 
-// ── Rotas públicas ──────────────────────────────────────────────────────────
+// ── Rotas públicas ────────────────────────────────────────────────────────────
 app.get('/', (_req, res) => res.json({ name: 'MyGarage API', status: 'online' }));
 
 app.get('/health', (_req, res) =>
@@ -44,7 +48,7 @@ app.get('/metrics', require('./middlewares/metrics').handler);
 
 app.use('/auth', authRoutes);
 
-// ── Rotas protegidas ────────────────────────────────────────────────────────
+// ── Rotas protegidas ──────────────────────────────────────────────────────────
 app.use('/vehicles',       verificarToken, vehicleRoutes);
 app.use('/users',          verificarToken, userRoutes);
 app.use('/abastecimentos', verificarToken, abastecimentoRoutes);
