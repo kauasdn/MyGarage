@@ -22,14 +22,25 @@ export default function Dashboard({ veiculo }) {
         const abastecimentos = resAbast.data;
         const manutencoes = resManu.data;
 
-        // Calcula consumo médio: diferença de KM / total de litros
+        // Ordena por KM crescente para garantir a ordem correta
+        const ordenados = [...abastecimentos].sort((a, b) => a.kmAtual - b.kmAtual);
+
+        // Calcula consumo médio par a par:
+        // Para cada abastecimento (exceto o primeiro), divide a distância percorrida
+        // desde o abastecimento anterior pelos litros deste abastecimento.
         let consumoMedio = null;
-        if (abastecimentos.length >= 2) {
-          const kmMax = Math.max(...abastecimentos.map(a => a.kmAtual));
-          const kmMin = Math.min(...abastecimentos.map(a => a.kmAtual));
-          const totalLitros = abastecimentos.reduce((acc, a) => acc + a.litros, 0);
-          if (totalLitros > 0) {
-            consumoMedio = ((kmMax - kmMin) / totalLitros).toFixed(1);
+        if (ordenados.length >= 2) {
+          const consumosParciais = [];
+          for (let i = 1; i < ordenados.length; i++) {
+            const kmPercorrido = ordenados[i].kmAtual - ordenados[i - 1].kmAtual;
+            const litros = ordenados[i].litros;
+            if (kmPercorrido > 0 && litros > 0) {
+              consumosParciais.push(kmPercorrido / litros);
+            }
+          }
+          if (consumosParciais.length > 0) {
+            const media = consumosParciais.reduce((a, b) => a + b, 0) / consumosParciais.length;
+            consumoMedio = media.toFixed(1);
           }
         }
 
