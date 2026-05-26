@@ -5,10 +5,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
-// TABELA DE UTILIZADORES
 model Usuario {
   id        Int       @id @default(autoincrement())
   nome      String
@@ -16,11 +14,9 @@ model Usuario {
   senha     String
   role      String    @default("user")
   criadoEm  DateTime  @default(now())
-  
-  veiculos  Veiculo[] 
+  veiculos  Veiculo[]
 }
 
-// TABELA DE VEÍCULOS
 model Veiculo {
   id             Int             @id @default(autoincrement())
   marca          String
@@ -29,13 +25,11 @@ model Veiculo {
   placa          String          @unique
   usuarioId      Int
   criadoEm       DateTime        @default(now())
-
   dono           Usuario         @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
   abastecimentos Abastecimento[]
   manutencoes    Manutencao[]
 }
 
-// TABELA DE ABASTECIMENTOS
 model Abastecimento {
   id          Int      @id @default(autoincrement())
   data        DateTime @default(now())
@@ -43,11 +37,9 @@ model Abastecimento {
   valorTotal  Float
   kmAtual     Int
   veiculoId   Int
-
   veiculo     Veiculo  @relation(fields: [veiculoId], references: [id], onDelete: Cascade)
 }
 
-// TABELA DE MANUTENÇÕES
 model Manutencao {
   id          Int      @id @default(autoincrement())
   data        DateTime @default(now())
@@ -55,6 +47,5 @@ model Manutencao {
   custo       Float
   kmAtual     Int
   veiculoId   Int
-
   veiculo     Veiculo  @relation(fields: [veiculoId], references: [id], onDelete: Cascade)
 }
