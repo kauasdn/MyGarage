@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-// Em produção: VITE_API_URL deve ser a URL do Railway
-// Em dev local: cai para localhost:3000
 const baseURL = import.meta.env.VITE_API_URL?.replace(/\/+$/, '') || 'http://localhost:3000';
 
 if (import.meta.env.PROD && !import.meta.env.VITE_API_URL) {

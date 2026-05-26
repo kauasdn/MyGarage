@@ -56,8 +56,6 @@ jobs:
         working-directory: frontend
         run: npm run build
         env:
-          # VITE_API_URL deve estar definida como secret no GitHub
-          # Se não estiver, o build usa string vazia e falha — proposital
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
       - name: Upload build artifact

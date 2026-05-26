@@ -8,8 +8,6 @@ on:
 
 jobs:
   # Backend: Railway detecta o push no GitHub automaticamente.
-  # NÃO usamos railway up aqui — o deploy é disparado pelo próprio Railway
-  # via GitHub integration (configurado no painel: Source → GitHub → branch main).
 
   deploy-frontend:
     name: Deploy Frontend (Vercel)

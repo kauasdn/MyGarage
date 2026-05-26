@@ -7,12 +7,15 @@ const vehicleRoutes       = require('./routes/vehicleRoutes');
 const userRoutes          = require('./routes/userRoutes');
 const abastecimentoRoutes = require('./routes/abastecimentoRoutes');
 const manutencaoRoutes    = require('./routes/manutencaoRoutes');
+const adminRoutes         = require('./routes/adminRoutes');
+
 const { verificarToken }  = require('../middlewares/authMiddleware');
+const { verificarAdmin }  = require('../middlewares/adminMiddleware');
 const { requestLogger, errorHandler } = require('./middlewares/observability');
 
 const app = express();
 
-// ── CORS ─────────────────────────────────────────────────────────────────────
+//  CORS 
 const allowedOrigins = [
   process.env.FRONTEND_URL,
   'http://localhost:5173',
@@ -30,29 +33,25 @@ const corsOptions = {
   credentials: true,
 };
 
-// Responde ao preflight OPTIONS em todas as rotas
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
-
 app.use(express.json());
 app.use(requestLogger);
 
-// ── Rotas públicas ────────────────────────────────────────────────────────────
-app.get('/', (_req, res) => res.json({ name: 'MyGarage API', status: 'online' }));
-
-app.get('/health', (_req, res) =>
-  res.json({ status: 'ok', uptime: process.uptime(), timestamp: new Date().toISOString() })
-);
-
+// Rotas públicas
+app.get('/',       (_req, res) => res.json({ name: 'MyGarage API', status: 'online' }));
+app.get('/health', (_req, res) => res.json({ status: 'ok', uptime: process.uptime(), timestamp: new Date().toISOString() }));
 app.get('/metrics', require('./middlewares/metrics').handler);
-
 app.use('/auth', authRoutes);
 
-// ── Rotas protegidas ──────────────────────────────────────────────────────────
+// Rotas protegidas
 app.use('/vehicles',       verificarToken, vehicleRoutes);
 app.use('/users',          verificarToken, userRoutes);
 app.use('/abastecimentos', verificarToken, abastecimentoRoutes);
 app.use('/manutencoes',    verificarToken, manutencaoRoutes);
+
+// Rotas de Admin (token + role admin)
+app.use('/admin', verificarToken, verificarAdmin, adminRoutes);
 
 app.use(errorHandler);
 
