@@ -5,6 +5,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 // TABELA DE UTILIZADORES
@@ -12,28 +13,26 @@ model Usuario {
   id        Int       @id @default(autoincrement())
   nome      String
   email     String    @unique
-  senha     String    // Guardaremos a senha encriptada (hash)
-  role      String    @default("user") // "user" ou "admin"
+  senha     String
+  role      String    @default("user")
   criadoEm  DateTime  @default(now())
   
-  // Relacionamento: Um utilizador pode ter vários veículos
   veiculos  Veiculo[] 
 }
 
 // TABELA DE VEÍCULOS
 model Veiculo {
-  id            Int             @id @default(autoincrement())
-  marca         String
-  modelo        String
-  ano           String
-  placa         String          @unique
-  usuarioId     Int
-  criadoEm      DateTime        @default(now())
+  id             Int             @id @default(autoincrement())
+  marca          String
+  modelo         String
+  ano            String
+  placa          String          @unique
+  usuarioId      Int
+  criadoEm       DateTime        @default(now())
 
-  // Relacionamentos
-  dono          Usuario         @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  dono           Usuario         @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
   abastecimentos Abastecimento[]
-  manutencoes   Manutencao[]
+  manutencoes    Manutencao[]
 }
 
 // TABELA DE ABASTECIMENTOS
@@ -45,7 +44,6 @@ model Abastecimento {
   kmAtual     Int
   veiculoId   Int
 
-  // Relacionamento: Pertence a um veículo
   veiculo     Veiculo  @relation(fields: [veiculoId], references: [id], onDelete: Cascade)
 }
 
@@ -58,6 +56,5 @@ model Manutencao {
   kmAtual     Int
   veiculoId   Int
 
-  // Relacionamento: Pertence a um veículo
   veiculo     Veiculo  @relation(fields: [veiculoId], references: [id], onDelete: Cascade)
 }

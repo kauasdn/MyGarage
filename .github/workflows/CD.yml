@@ -10,7 +10,6 @@ jobs:
   deploy-backend:
     name: Deploy Backend (Railway)
     runs-on: ubuntu-latest
-    # Só executa se o CI passou
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     environment: production
 
@@ -20,9 +19,9 @@ jobs:
       - name: Install Railway CLI
         run: npm install -g @railway/cli
 
-      - name: Deploy to Railway
+      - name: Deploy backend to Railway
         working-directory: backend
-        run: railway up --service mygarage-backend --detach
+        run: railway up --detach
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
@@ -50,7 +49,6 @@ jobs:
         working-directory: frontend
         run: npm run build
         env:
-          # URL pública do Railway — ex: https://mygarage-backend.up.railway.app
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
       - name: Deploy to Vercel
