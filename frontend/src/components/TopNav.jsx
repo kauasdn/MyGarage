@@ -14,7 +14,7 @@ export default function TopNav({ page, setPage, veiculos, veiculoAtivoId, setVei
     { id: "abastecimentos", label: "Abastecimentos" },
     { id: "manutencoes",    label: "Manutenções" },
     { id: "comparativos",   label: "Ranking Geral" },
-    ...(isAdmin ? [{ id: "admin", label: "⚙ Admin" }] : []),
+    ...(isAdmin ? [{ id: "admin", label: "Admin" }] : []),
   ];
 
   const handlePageChange = (id) => { setPage(id); setIsMobileMenuOpen(false); };

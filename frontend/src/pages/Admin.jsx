@@ -225,9 +225,9 @@ export default function Admin() {
   const [aba, setAba] = useState('geral');
 
   const abas = [
-    { id: 'geral',    label: '📊 Visão Geral' },
-    { id: 'usuarios', label: '👥 Usuários' },
-    { id: 'veiculos', label: '🚗 Veículos' },
+    { id: 'geral',    label: 'Visão Geral' },
+    { id: 'usuarios', label: 'Usuários' },
+    { id: 'veiculos', label: 'Veículos' },
   ];
 
   return (
