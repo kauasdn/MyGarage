@@ -21,7 +21,8 @@ jobs:
 
       - name: Deploy backend to Railway
         working-directory: backend
-        run: railway up --detach
+        # RAILWAY_SERVICE_NAME = nome exato do serviço no painel do Railway
+        run: railway up --service "${{ secrets.RAILWAY_SERVICE_NAME }}" --detach
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
