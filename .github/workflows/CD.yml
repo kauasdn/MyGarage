@@ -7,31 +7,15 @@ on:
     branches: [main]
 
 jobs:
-  deploy-backend:
-    name: Deploy Backend (Railway)
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    environment: production
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install Railway CLI
-        run: npm install -g @railway/cli
-
-      - name: Deploy backend to Railway
-        working-directory: backend
-        # RAILWAY_SERVICE_NAME = nome exato do serviço no painel do Railway
-        run: railway up --service "${{ secrets.RAILWAY_SERVICE_NAME }}" --detach
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+  # Backend: Railway detecta o push no GitHub automaticamente.
+  # NÃO usamos railway up aqui — o deploy é disparado pelo próprio Railway
+  # via GitHub integration (configurado no painel: Source → GitHub → branch main).
 
   deploy-frontend:
     name: Deploy Frontend (Vercel)
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     environment: production
-    needs: deploy-backend
 
     steps:
       - uses: actions/checkout@v4
